@@ -299,6 +299,21 @@
       </div>
     </section>
 
+    <!-- ===================== CAUSE DETAIL OVERLAY (FULL-SCREEN SPLIT) ===================== -->
+    <div id="cause-modal-backdrop" class="cause-modal-backdrop" aria-hidden="true" hidden></div>
+    <div id="cause-modal-overlay" class="cause-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="cause-modal-title" hidden>
+      <div class="cause-modal-container" id="cause-modal-container">
+        <!-- LEFT COLUMN: Selected Card Stage Slot -->
+        <div class="cause-modal-left-stage" id="cause-modal-left-stage" aria-hidden="true"></div>
+
+        <!-- RIGHT COLUMN: Cause Detail Panel -->
+        <div class="cause-modal-dialog" id="cause-modal-dialog" tabindex="-1">
+          <button type="button" class="cause-modal-close" id="cause-modal-close" aria-label="Close cause details">✕</button>
+          <div class="cause-modal-body-container" id="cause-modal-body"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- ===================== INITIATIVES ===================== -->
     <section id="initiatives" class="section-initiatives" aria-labelledby="initiatives-heading">
       <div class="initiatives-header">
@@ -362,7 +377,7 @@
 
           <div class="init-panel" id="init-panel-health" role="tabpanel" aria-labelledby="tab-health" hidden>
             <div class="init-panel-image">
-              <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=85" alt="Free eye examination at the Clearer Vision community event" loading="lazy" />
+              <img src="assets/images/IMG_4492.jpg" alt="Free eye examination at the Clearer Vision community event" loading="lazy" style="object-position: center 25%;" />
               <div class="init-panel-badge">HEALTH</div>
             </div>
             <div class="init-panel-body">
@@ -437,7 +452,7 @@
             <span class="acc-chevron" aria-hidden="true">↓</span>
           </button>
           <div class="acc-body" id="acc-body-health" hidden>
-            <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80" alt="Free eye care examination" loading="lazy" class="acc-image" />
+            <img src="assets/images/IMG_4492.jpg" alt="Free eye care examination" loading="lazy" class="acc-image" style="object-position: center 25%;" />
             <p>From eye care camps to diabetes awareness — making essential healthcare more accessible. Verified event results will be added to individual event pages.</p>
             <a href="#impact" class="btn-outline-light">SEE OUR IMPACT →</a>
           </div>
@@ -556,13 +571,13 @@
       <div class="today-grid" id="today-grid" role="list">
         <div class="today-card" data-category="health" role="listitem" tabindex="0">
           <div class="today-card-image">
-            <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80" alt="Free eye examination for community participants" loading="lazy" />
+            <img src="assets/images/IMG_4504.jpg" alt="Clearer Vision, Brighter Futures community outreach event" loading="eager" style="object-position: center 30%;" />
             <span class="today-card-cat">HEALTH</span>
           </div>
           <div class="today-card-body">
-            <span class="today-card-date">Event date to be provided</span>
+            <span class="today-card-date">28 June 2026</span>
             <h3 class="today-card-title">Clearer Vision, Brighter Futures</h3>
-            <p>Event description and results will be added when official information is provided.</p>
+            <p>Free comprehensive eye examination and prescription glasses distribution for community members and youth across Makassar.</p>
           </div>
         </div>
         <div class="today-card" data-category="education" role="listitem" tabindex="0">
@@ -636,9 +651,9 @@
           </div>
           <span class="gallery-caption">Community Day</span>
         </div>
-        <div class="gallery-item gi-2" data-caption="Eye care initiative — 28 June 2026" data-cat="Health" data-date="June 2026" tabindex="0" role="button" aria-label="View photo: Eye care initiative">
+        <div class="gallery-item gi-2" data-caption="Eye care initiative — 28 June 2026" data-cat="Health" data-date="28 June 2026" tabindex="0" role="button" aria-label="View photo: Eye care initiative">
           <div class="gallery-photo-frame polaroid">
-            <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=500&q=80" alt="A participant receiving a free eye examination" loading="lazy" />
+            <img src="assets/images/IMG_4495.jpg" alt="A participant receiving an eye reading test" loading="lazy" style="object-position: center 30%;" />
             <span class="polaroid-label">28.06.2026</span>
           </div>
         </div>
@@ -669,9 +684,9 @@
             <span class="polaroid-label">YOUTH ACTION</span>
           </div>
         </div>
-        <div class="gallery-item gi-8" data-caption="Patient receiving free prescription glasses" data-cat="Health" data-date="June 2026" tabindex="0" role="button" aria-label="View photo: Free glasses distribution">
+        <div class="gallery-item gi-8" data-caption="Community member receiving free prescription glasses" data-cat="Health" data-date="28 June 2026" tabindex="0" role="button" aria-label="View photo: Free glasses distribution">
           <div class="gallery-photo-frame">
-            <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=500&q=80" alt="Community member receiving free prescription glasses" loading="lazy" />
+            <img src="assets/images/IMG_4521.jpg" alt="Community member receiving free prescription glasses" loading="lazy" style="object-position: center 35%;" />
           </div>
         </div>
         <div class="gallery-sparkles" aria-hidden="true">

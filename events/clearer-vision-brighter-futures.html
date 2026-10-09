@@ -73,7 +73,7 @@
         </div>
         <div class="event-detail-layout">
           <div class="event-main-image">
-            <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=85" alt="Free eye examination at Clearer Vision event" loading="eager" />
+            <img src="../assets/images/IMG_4504.jpg" alt="Clearer Vision, Brighter Futures community outreach event" loading="eager" style="object-fit: cover; object-position: center 35%;" />
           </div>
           <div class="event-detail-copy">
             <h2 class="event-copy-heading">ABOUT THE EVENT</h2>
@@ -105,22 +105,46 @@
           <div class="section-label">EVENT GALLERY</div>
           <h2 id="event-gallery-heading" class="display-headline">PHOTOS FROM THE FIELD</h2>
           <div class="event-gallery-grid">
-            <div class="event-gallery-item">
-              <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=700&q=80" alt="Free eye examination at Clearer Vision event" loading="lazy" />
-              <span class="event-gallery-caption">Free eye examination at Clearer Vision event</span>
+            <div class="event-gallery-item" data-caption="Briefing &amp; Community Engagement" data-cat="HEALTH" data-date="28 June 2026" tabindex="0" role="button" aria-label="View photo: Briefing &amp; Community Engagement">
+              <img src="../assets/images/IMG_4477.jpg" alt="Briefing &amp; Community Engagement" loading="lazy" />
+              <span class="event-gallery-caption">Briefing &amp; Community Engagement</span>
             </div>
-            <div class="event-gallery-item">
-              <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=700&q=80" alt="Community member receiving prescription glasses" loading="lazy" />
-              <span class="event-gallery-caption">Community member receiving prescription glasses</span>
+            <div class="event-gallery-item" data-caption="Participant Intake &amp; Registration" data-cat="HEALTH" data-date="28 June 2026" tabindex="0" role="button" aria-label="View photo: Participant Intake &amp; Registration">
+              <img src="../assets/images/IMG_4486.jpg" alt="Participant Intake &amp; Registration" loading="lazy" />
+              <span class="event-gallery-caption">Participant Intake &amp; Registration</span>
             </div>
-            <div class="event-gallery-item">
-              <img src="https://images.unsplash.com/photo-1551076805-e1869033e561?w=700&q=80" alt="Healthcare outreach team in action" loading="lazy" />
-              <span class="event-gallery-caption">Healthcare outreach team in action</span>
+            <div class="event-gallery-item" data-caption="Eye Screening &amp; Refraction Testing" data-cat="HEALTH" data-date="28 June 2026" tabindex="0" role="button" aria-label="View photo: Eye Screening &amp; Refraction Testing">
+              <img src="../assets/images/IMG_4492.jpg" alt="Eye Screening &amp; Refraction Testing" loading="lazy" />
+              <span class="event-gallery-caption">Eye Screening &amp; Refraction Testing</span>
+            </div>
+            <div class="event-gallery-item" data-caption="Near-Vision Reading Assessment" data-cat="HEALTH" data-date="28 June 2026" tabindex="0" role="button" aria-label="View photo: Near-Vision Reading Assessment">
+              <img src="../assets/images/IMG_4495.jpg" alt="Near-Vision Reading Assessment" loading="lazy" />
+              <span class="event-gallery-caption">Near-Vision Reading Assessment</span>
+            </div>
+            <div class="event-gallery-item" data-caption="Gift of Sight Eyeglasses Handover" data-cat="HEALTH" data-date="28 June 2026" tabindex="0" role="button" aria-label="View photo: Gift of Sight Eyeglasses Handover">
+              <img src="../assets/images/IMG_4521.jpg" alt="Gift of Sight Eyeglasses Handover" loading="lazy" />
+              <span class="event-gallery-caption">Gift of Sight Eyeglasses Handover</span>
             </div>
           </div>
         </section>
       </div>
     </section>
+
+    <!-- ===================== LIGHTBOX ===================== -->
+    <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
+      <button class="lightbox-close" id="lightbox-close" aria-label="Close image viewer">✕</button>
+      <button class="lightbox-prev" id="lightbox-prev" aria-label="Previous image">←</button>
+      <button class="lightbox-next" id="lightbox-next" aria-label="Next image">→</button>
+      <div class="lightbox-inner">
+        <img id="lightbox-img" src="" alt="" />
+        <div class="lightbox-info">
+          <span id="lightbox-caption"></span>
+          <span id="lightbox-cat" class="lightbox-cat"></span>
+          <span id="lightbox-date" class="lightbox-date"></span>
+        </div>
+      </div>
+    </div>
+    <div class="lightbox-overlay" id="lightbox-overlay" hidden></div>
   </main>
 
   <!-- ===================== FOOTER ===================== -->

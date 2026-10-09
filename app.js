@@ -33,12 +33,68 @@
       volunteersInvolved: null,
       communitiesReached: null,
     },
-    pillars: Array.from({ length: 8 }, (_, index) => ({
-      number: String(index + 1).padStart(2, '0'),
-      name: `[PILLAR ${String(index + 1).padStart(2, '0')} — CONTENT TO BE PROVIDED]`,
-      description: '[Official pillar description to be provided by the organization.]',
-      image: null,
-    })),
+    pillars: [
+      {
+        number: '01',
+        id: 'childhood-cancer',
+        name: 'Childhood Cancer',
+        description: 'We support the needs of children and families affected by childhood cancer.',
+        image: null,
+      },
+      {
+        number: '02',
+        id: 'diabetes',
+        name: 'Diabetes',
+        description: 'We work to reduce the prevalence of diabetes and improve quality of life for people living with diabetes.',
+        image: null,
+      },
+      {
+        number: '03',
+        id: 'disaster-relief',
+        name: 'Disaster Relief',
+        description: 'We help meet immediate needs and provide long-term support for communities affected by natural disasters.',
+        image: null,
+      },
+      {
+        number: '04',
+        id: 'environment',
+        name: 'Environment',
+        description: 'We find ways to protect the environment, creating healthier communities and a more sustainable world.',
+        image: null,
+      },
+      {
+        number: '05',
+        id: 'humanitarian',
+        name: 'Humanitarian',
+        description: 'We identify crucial needs and provide humanitarian aid where it is needed most.',
+        image: 'assets/images/IMG_4507.jpg',
+        alt: 'Volunteers assisting community members during an outreach activity',
+        imagePosition: 'center 42%',
+      },
+      {
+        number: '06',
+        id: 'hunger',
+        name: 'Hunger',
+        description: 'We work to improve food security and access to nutritious food to help alleviate hunger.',
+        image: null,
+      },
+      {
+        number: '07',
+        id: 'vision',
+        name: 'Vision',
+        description: 'We help prevent avoidable blindness and improve quality of life for people who are blind or visually impaired.',
+        image: 'assets/images/IMG_4521.jpg',
+        alt: 'Eyeglasses handover during a Gift of Sight community service activity',
+        imagePosition: 'center 38%',
+      },
+      {
+        number: '08',
+        id: 'youth',
+        name: 'Youth',
+        description: 'We support young people so they can make positive choices, lead healthy and productive lives, and become the next generation of service leaders.',
+        image: null,
+      },
+    ],
     teamDepartments: [
       {
         id: 'executive',
@@ -212,13 +268,17 @@
             isLeader: false
           },
           {
-            id: 'kevin',
-            name: 'Kevin',
-            age: null,
+            id: 'kevin-aprilio',
+            name: 'Kevin Aprilio',
+            age: 17,
             department: 'Human Resource Team',
-            image: null,
-            quote: null,
-            instagram: null,
+            image: 'assets/team/Kevin-Aprilio.png',
+            imagePosition: '53% 43%',
+            quote: 'Don’t chase after a dream, they are not criminals.',
+            instagram: {
+              handle: '@kevin.apr18',
+              url: 'https://instagram.com/kevin.apr18'
+            },
             linkedin: null,
             substack: null,
             isLeader: false
@@ -235,7 +295,7 @@
         date: '28 June 2026',
         category: 'HEALTH',
         description: 'Free comprehensive eye examination and prescription glasses distribution for community members and youth across Makassar.',
-        image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=85',
+        image: 'assets/images/IMG_4504.jpg',
         location: 'Makassar, South Sulawesi, Indonesia',
         statistics: {
           'Participants Reached': '877',
@@ -243,9 +303,11 @@
           'Community Volunteers': 'Active',
         },
         gallery: [
-          { src: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=700&q=80', caption: 'Free eye examination at Clearer Vision event' },
-          { src: 'https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=700&q=80', caption: 'Community member receiving prescription glasses' },
-          { src: 'https://images.unsplash.com/photo-1551076805-e1869033e561?w=700&q=80', caption: 'Healthcare outreach team in action' },
+          { src: 'assets/images/IMG_4477.jpg', caption: 'Briefing & Community Engagement' },
+          { src: 'assets/images/IMG_4486.jpg', caption: 'Participant Intake & Registration' },
+          { src: 'assets/images/IMG_4492.jpg', caption: 'Eye Screening & Refraction Testing' },
+          { src: 'assets/images/IMG_4495.jpg', caption: 'Near-Vision Reading Assessment' },
+          { src: 'assets/images/IMG_4521.jpg', caption: 'Gift of Sight Eyeglasses Handover' },
         ],
       },
       {
@@ -288,14 +350,68 @@
     ],
   };
 
+  function resolveAssetPath(p) {
+    if (!p) return p;
+    const isSubdir = window.location.pathname.includes('/events/');
+    return (isSubdir && p.startsWith('assets/')) ? '../' + p : p;
+  }
+
+  function getCauseIconSvg(id) {
+    switch (id) {
+      case 'childhood-cancer':
+        return `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" class="cause-svg" aria-hidden="true">
+          <path d="M24 6 C20 16 14 26 12 36 C10 42 16 44 20 40 L24 35 L28 40 C32 44 38 42 36 36 C34 26 28 16 24 6 Z" stroke-linejoin="round"/>
+          <circle cx="24" cy="20" r="3.5" fill="currentColor" stroke="none" opacity="0.35"/>
+        </svg>`;
+      case 'diabetes':
+        return `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" class="cause-svg" aria-hidden="true">
+          <circle cx="24" cy="24" r="16" stroke-width="3.5"/>
+          <path d="M24 15 C24 15 18 23 18 27 C18 30.3 20.7 33 24 33 C27.3 33 30 30.3 30 27 C30 23 24 15 24 15 Z" fill="currentColor" stroke="none" opacity="0.35"/>
+        </svg>`;
+      case 'disaster-relief':
+        return `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" class="cause-svg" aria-hidden="true">
+          <path d="M24 6 L38 12 V24 C38 33 24 42 24 42 C24 42 10 33 10 24 V12 L24 6 Z" stroke-linejoin="round"/>
+          <path d="M24 17 V31 M17 24 H31" stroke-linecap="round"/>
+        </svg>`;
+      case 'environment':
+        return `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" class="cause-svg" aria-hidden="true">
+          <path d="M14 36 C14 36 12 22 26 10 C26 10 38 10 38 22 C38 36 24 38 14 36 Z" stroke-linejoin="round"/>
+          <path d="M14 36 C22 30 26 22 30 16" stroke-linecap="round"/>
+          <path d="M23 25 C28 26 31 28 34 32" stroke-linecap="round"/>
+        </svg>`;
+      case 'hunger':
+        return `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" class="cause-svg" aria-hidden="true">
+          <path d="M10 24 C10 32 16 38 24 38 C32 38 38 32 38 24 H10 Z" stroke-linejoin="round"/>
+          <path d="M24 38 V42 M16 42 H32" stroke-linecap="round"/>
+          <path d="M17 16 C17 16 20 18 20 21 M24 11 C24 11 27 14 27 21 M31 16 C31 16 34 18 34 21" stroke-linecap="round"/>
+        </svg>`;
+      case 'youth':
+        return `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" class="cause-svg" aria-hidden="true">
+          <polygon points="24,7 28.8,17 39.8,18.6 31.9,26.3 33.8,37.2 24,32 14.2,37.2 16.1,26.3 8.2,18.6 19.2,17" stroke-linejoin="round"/>
+          <circle cx="24" cy="22" r="3" fill="currentColor" stroke="none" opacity="0.35"/>
+        </svg>`;
+      default:
+        return `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" class="cause-svg" aria-hidden="true">
+          <circle cx="24" cy="24" r="16"/>
+        </svg>`;
+    }
+  }
+
   function renderPillars() {
     const grid = $('#pillar-grid');
     if (!grid) return;
     grid.innerHTML = siteData.pillars.map(pillar => `
-      <article class="wwd-card" tabindex="0">
+      <article class="wwd-card" tabindex="0" role="button" aria-haspopup="dialog" aria-expanded="false" aria-label="View details for cause ${pillar.number}: ${pillar.name}" data-pillar-id="${pillar.id}">
         <div class="wwd-card-number" aria-hidden="true">${pillar.number}</div>
-        <div class="wwd-card-image wwd-card-image-placeholder" aria-hidden="true">
-          ${pillar.image ? `<img src="${pillar.image}" alt="${pillar.name}" loading="lazy" />` : `<span>IMAGE / ICON<br/>TO BE PROVIDED</span>`}
+        <div class="wwd-card-image ${pillar.image ? '' : 'wwd-card-graphic-wrap'}" aria-hidden="true">
+          ${pillar.image ? `
+            <img src="${resolveAssetPath(pillar.image)}" alt="${pillar.alt || pillar.name}" loading="eager" style="${pillar.imagePosition ? `object-position: ${pillar.imagePosition};` : ''}" />
+          ` : `
+            <div class="wwd-cause-graphic cause-${pillar.id}">
+              ${getCauseIconSvg(pillar.id)}
+              <span class="wwd-cause-badge">${pillar.name}</span>
+            </div>
+          `}
         </div>
         <div class="wwd-card-content">
           <h3 class="wwd-card-title">${pillar.name}</h3>
@@ -304,6 +420,358 @@
         </div>
       </article>
     `).join('');
+  }
+
+  function initCauseModal() {
+    const section   = $('#what-we-do');
+    const grid      = $('#pillar-grid');
+    const overlay   = $('#cause-modal-overlay');
+    const backdrop  = $('#cause-modal-backdrop');
+    const dialog    = $('#cause-modal-dialog');
+    const leftStage = $('#cause-modal-left-stage');
+    const modalBody = $('#cause-modal-body');
+    const closeBtn  = $('#cause-modal-close');
+    if (!grid || !overlay || !backdrop || !dialog || !modalBody || !leftStage) return;
+
+    let lastFocusedElement = null;
+    let isTransitioning = false;
+    let isOpen = false;
+    let currentSelectedCard = null;
+    let cleanupTimeout = null;
+
+    function openCauseModal(pillarId) {
+      if (isOpen) return;
+      const pillar = siteData.pillars.find(p => p.id === pillarId);
+      const cards = $$('.wwd-card', grid);
+      const selectedIndex = cards.findIndex(c => c.dataset.pillarId === pillarId);
+      if (!pillar || selectedIndex === -1) return;
+
+      const selectedCard = cards[selectedIndex];
+      currentSelectedCard = selectedCard;
+      lastFocusedElement = (document.activeElement && document.activeElement !== document.body)
+        ? document.activeElement
+        : selectedCard;
+
+      if (lastFocusedElement && lastFocusedElement.setAttribute) {
+        lastFocusedElement.setAttribute('aria-expanded', 'true');
+      }
+
+      clearTimeout(cleanupTimeout);
+      isTransitioning = true;
+      isOpen = true;
+
+      // 1. Capture original bounding rects of all 8 cards in viewport space
+      const originalRects = cards.map(c => c.getBoundingClientRect());
+      const selectedRect = originalRects[selectedIndex];
+      const isMobile = window.innerWidth <= 960;
+
+      // 2. Populate Cause Details on the Right
+      modalBody.innerHTML = `
+        <div class="cause-modal-body-container">
+          <div class="cause-modal-meta">
+            <span class="cause-modal-num-badge">CAUSE ${pillar.number}</span>
+            <span class="cause-modal-tag">LIONS GLOBAL CAUSE</span>
+          </div>
+          <h2 id="cause-modal-title" class="cause-modal-title display-headline">${pillar.name}</h2>
+          <div class="cause-modal-divider"></div>
+          <p class="cause-modal-desc">${pillar.description}</p>
+          <div class="cause-modal-pillar-highlight">
+            <div class="cause-highlight-item">
+              <span class="cause-highlight-label">PILLAR NO.</span>
+              <span class="cause-highlight-val">${pillar.number} OF 08</span>
+            </div>
+            <div class="cause-highlight-item">
+              <span class="cause-highlight-label">SCOPE</span>
+              <span class="cause-highlight-val">GLOBAL &amp; LOCAL</span>
+            </div>
+            <div class="cause-highlight-item">
+              <span class="cause-highlight-label">ACTION</span>
+              <span class="cause-highlight-val">YOUTH-LED</span>
+            </div>
+          </div>
+          <div class="cause-modal-actions">
+            <a href="#collaborate" class="cause-modal-cta-btn" id="cause-modal-support-btn">SUPPORT THIS CAUSE →</a>
+            <button type="button" class="cause-modal-close-btn" id="cause-modal-dismiss-btn" aria-label="Close cause details">CLOSE</button>
+          </div>
+        </div>
+      `;
+
+      const dismissBtn = $('#cause-modal-dismiss-btn', modalBody);
+      if (dismissBtn) dismissBtn.addEventListener('click', closeModal);
+
+      const supportBtn = $('#cause-modal-support-btn', modalBody);
+      if (supportBtn) {
+        supportBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const target = document.querySelector('#collaborate');
+          closeModal({ restoreFocus: false });
+          if (target) {
+            requestAnimationFrame(() => {
+              smoothScrollTo(target);
+            });
+            setTimeout(() => {
+              const firstInput = target.querySelector('#field-name');
+              if (firstInput) {
+                firstInput.focus({ preventScroll: true });
+              } else {
+                target.setAttribute('tabindex', '-1');
+                target.focus({ preventScroll: true });
+              }
+            }, prefersReducedMotion ? 50 : 650);
+          }
+        });
+      }
+
+      // Unhide overlay & backdrop to measure stage layout
+      backdrop.removeAttribute('hidden');
+      overlay.removeAttribute('hidden');
+      if (section) section.classList.add('cause-detail-active');
+      document.documentElement.classList.add('cause-detail-active');
+      document.body.classList.add('cause-detail-active');
+      document.body.style.overflow = 'hidden';
+
+      // 3. Compute target coordinates for the selected card and stacked cards on the LEFT
+      const stageRect = leftStage.getBoundingClientRect();
+      const cardW = selectedRect.width;
+      const cardH = selectedRect.height;
+
+      let targetCenterX, targetCenterY, targetScale;
+
+      if (!isMobile) {
+        // Desktop: Left 48% column stage
+        targetCenterX = stageRect.left + stageRect.width / 2;
+        targetCenterY = stageRect.top + stageRect.height / 2;
+        const maxScaleW = (stageRect.width * 0.76) / cardW;
+        const maxScaleH = (stageRect.height * 0.88) / cardH;
+        targetScale = Math.min(maxScaleW, maxScaleH, 1.85);
+      } else {
+        // Mobile: Stacked layout above details
+        targetCenterX = stageRect.left + stageRect.width / 2;
+        targetCenterY = stageRect.top + stageRect.height * 0.48;
+        targetScale = Math.min((stageRect.width * 0.88) / cardW, (stageRect.height * 0.82) / cardH, 1.05);
+      }
+
+      if (prefersReducedMotion) {
+        backdrop.classList.add('open');
+        overlay.classList.add('open');
+        cards.forEach((c, i) => {
+          if (i === selectedIndex) {
+            c.classList.add('is-selected');
+          } else {
+            c.classList.add('is-stacked');
+          }
+        });
+        isTransitioning = false;
+        if (closeBtn) closeBtn.focus();
+        return;
+      }
+
+      const selInitCenterX = selectedRect.left + cardW / 2;
+      const selInitCenterY = selectedRect.top + cardH / 2;
+      const selDx = targetCenterX - selInitCenterX;
+      const selDy = targetCenterY - selInitCenterY;
+
+      // Sort surrounding cards by distance from selected card for natural staggered motion
+      const surrounding = cards
+        .map((c, i) => {
+          if (i === selectedIndex) return null;
+          const rect = originalRects[i];
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          const dist = Math.hypot(cx - selInitCenterX, cy - selInitCenterY);
+          return { card: c, index: i, rect, cx, cy, dist };
+        })
+        .filter(Boolean)
+        .sort((a, b) => a.dist - b.dist);
+
+      // 4. Animate Selected Card to the LEFT column with prominent elevation
+      selectedCard.classList.add('is-animating', 'is-selected');
+      selectedCard.style.zIndex = '2200';
+      selectedCard.style.transition = 'transform 750ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 750ms cubic-bezier(0.22, 1, 0.36, 1), border-color 750ms ease';
+      selectedCard.style.transform = `translate3d(${selDx}px, ${selDy}px, 0) scale(${targetScale})`;
+      selectedCard.style.boxShadow = '0 32px 70px -10px rgba(13, 27, 62, 0.28), 0 16px 32px -6px rgba(13, 27, 62, 0.16)';
+      selectedCard.style.borderColor = 'var(--campaign-blue)';
+
+      // 5. Animate surrounding 7 cards inward behind selected card on the LEFT with staggered delays
+      surrounding.forEach((item, rank) => {
+        const { card, cx, cy } = item;
+        card.classList.add('is-animating', 'is-stacked');
+        card.style.zIndex = `${2150 - rank}`;
+        card.style.pointerEvents = 'none';
+
+        const offsetIndex = rank - 3;
+        const stackOffsetX = !isMobile ? offsetIndex * 12 : offsetIndex * 4;
+        const stackOffsetY = !isMobile ? Math.abs(offsetIndex) * 6 - 8 : (rank + 1) * 3;
+        const depthScale = targetScale * (0.94 - rank * 0.012);
+
+        const cardDx = (targetCenterX + stackOffsetX) - cx;
+        const cardDy = (targetCenterY + stackOffsetY) - cy;
+
+        const delay = Math.round(25 + rank * 30);
+
+        card.style.transition = `transform 750ms cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms, opacity 750ms ease ${delay}ms, box-shadow 750ms ease ${delay}ms`;
+        card.style.transform = `translate3d(${cardDx}px, ${cardDy}px, 0) scale(${depthScale})`;
+        card.style.opacity = `${Math.max(0.65, 0.88 - rank * 0.04)}`;
+        card.style.boxShadow = '0 12px 28px rgba(13, 27, 62, 0.10)';
+      });
+
+      // 6. Reveal backdrop and slide details dialog in from the RIGHT
+      requestAnimationFrame(() => {
+        backdrop.classList.add('open');
+        overlay.classList.add('open');
+      });
+
+      // 7. Transition completion
+      cleanupTimeout = setTimeout(() => {
+        isTransitioning = false;
+        if (closeBtn) closeBtn.focus();
+      }, 820);
+    }
+
+    function closeModal(options) {
+      if (!isOpen) return;
+      const restoreFocus = options && typeof options.restoreFocus === 'boolean' ? options.restoreFocus : true;
+      clearTimeout(cleanupTimeout);
+      isTransitioning = true;
+      isOpen = false;
+
+      const cards = $$('.wwd-card', grid);
+
+      // Release body & html scroll locks immediately so page can scroll smoothly
+      document.body.style.overflow = '';
+      document.documentElement.classList.remove('cause-detail-active');
+      document.body.classList.remove('cause-detail-active');
+      backdrop.style.pointerEvents = 'none';
+      overlay.style.pointerEvents = 'none';
+
+      if (prefersReducedMotion) {
+        backdrop.classList.remove('open');
+        overlay.classList.remove('open');
+        backdrop.setAttribute('hidden', '');
+        overlay.setAttribute('hidden', '');
+        backdrop.style.pointerEvents = '';
+        overlay.style.pointerEvents = '';
+        if (section) section.classList.remove('cause-detail-active');
+        cards.forEach(c => {
+          c.classList.remove('is-selected', 'is-stacked', 'is-animating');
+          c.removeAttribute('style');
+        });
+        if (lastFocusedElement) {
+          if (lastFocusedElement.setAttribute) lastFocusedElement.setAttribute('aria-expanded', 'false');
+          if (restoreFocus) lastFocusedElement.focus();
+        }
+        isTransitioning = false;
+        currentSelectedCard = null;
+        return;
+      }
+
+      // 1. Details panel animates out to the RIGHT, backdrop fades out
+      backdrop.classList.remove('open');
+      overlay.classList.remove('open');
+      if (section) section.classList.remove('cause-detail-active');
+
+      // 2. Coordinated reverse animation:
+      // Selected card moves back to exact original grid location
+      // Surrounding cards animate outward from behind selected card
+      setTimeout(() => {
+        if (currentSelectedCard) {
+          currentSelectedCard.style.transition = 'transform 680ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 680ms cubic-bezier(0.22, 1, 0.36, 1), border-color 680ms ease';
+          currentSelectedCard.style.transform = 'translate3d(0, 0, 0) scale(1)';
+          currentSelectedCard.style.boxShadow = '';
+          currentSelectedCard.style.borderColor = '';
+        }
+
+        const otherCards = cards.filter(c => c !== currentSelectedCard);
+        otherCards.forEach((card, rank) => {
+          const reverseDelay = Math.round(rank * 25);
+          card.style.transition = `transform 650ms cubic-bezier(0.22, 1, 0.36, 1) ${reverseDelay}ms, opacity 650ms ease ${reverseDelay}ms, box-shadow 650ms ease ${reverseDelay}ms`;
+          card.style.transform = 'translate3d(0, 0, 0) scale(1)';
+          card.style.opacity = '1';
+          card.style.boxShadow = '';
+        });
+      }, 60);
+
+      // 3. Complete cleanup when transition finishes
+      cleanupTimeout = setTimeout(() => {
+        backdrop.setAttribute('hidden', '');
+        overlay.setAttribute('hidden', '');
+        backdrop.style.pointerEvents = '';
+        overlay.style.pointerEvents = '';
+        document.body.style.overflow = '';
+        document.documentElement.classList.remove('cause-detail-active');
+        document.body.classList.remove('cause-detail-active');
+
+        cards.forEach(card => {
+          card.classList.remove('is-selected', 'is-stacked', 'is-animating');
+          card.removeAttribute('style');
+        });
+
+        if (lastFocusedElement) {
+          if (lastFocusedElement.setAttribute) {
+            lastFocusedElement.setAttribute('aria-expanded', 'false');
+          }
+          if (restoreFocus) {
+            lastFocusedElement.focus();
+          }
+        }
+
+        isTransitioning = false;
+        currentSelectedCard = null;
+      }, 780);
+    }
+
+    // Grid Click & Keyboard Handlers
+    if (grid) {
+      grid.addEventListener('click', e => {
+        const card = e.target.closest('.wwd-card');
+        if (!card) return;
+        const pillarId = card.dataset.pillarId;
+        if (pillarId) openCauseModal(pillarId);
+      });
+
+      grid.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          const card = e.target.closest('.wwd-card');
+          if (!card) return;
+          e.preventDefault();
+          const pillarId = card.dataset.pillarId;
+          if (pillarId) openCauseModal(pillarId);
+        }
+      });
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (backdrop) backdrop.addEventListener('click', closeModal);
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && isOpen) {
+        closeModal();
+      }
+    });
+
+    dialog.addEventListener('keydown', e => {
+      if (e.key !== 'Tab') return;
+      const focusable = dialog.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+
+    // Handle viewport resize safely
+    window.addEventListener('resize', debounce(() => {
+      if (isOpen && !isTransitioning) {
+        closeModal();
+      }
+    }, 200));
   }
 
   function renderEventTimeline() {
@@ -320,7 +788,7 @@
         <div class="timeline-event-card">
           <div class="timeline-image-wrap ${event.image ? '' : 'timeline-image-placeholder'}" aria-hidden="true">
             ${event.image ? `
-              <img src="${event.image}" alt="${event.title}" loading="lazy" />
+              <img src="${resolveAssetPath(event.image)}" alt="${event.title}" loading="eager" />
             ` : `
               <div class="timeline-placeholder-content">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="timeline-placeholder-icon" aria-hidden="true">
@@ -389,7 +857,7 @@
          </div>`;
 
     const agePill = member.age ? `<span class="team-pill team-age-pill">${member.age} YRS</span>` : '';
-    const deptPill = `<span class="team-pill team-dept-pill">${member.department}</span>`;
+    const deptPill = member.department ? `<span class="team-pill team-dept-pill">${member.department}</span>` : '';
     
     const quoteHtml = member.quote
       ? `<blockquote class="team-card-quote"><p>“${member.quote}”</p></blockquote>`
@@ -586,7 +1054,7 @@
           </div>
           <div class="modal-details-column">
             <div class="modal-pills-row">
-              <span class="modal-pill modal-dept-pill">${foundMember.department}</span>
+              ${foundMember.department ? `<span class="modal-pill modal-dept-pill">${foundMember.department}</span>` : ''}
               ${foundMember.age ? `<span class="modal-pill modal-age-pill">${foundMember.age} YEARS OLD</span>` : ''}
             </div>
             <h2 id="team-modal-name" class="modal-member-fullname display-headline">${foundMember.name}</h2>
@@ -666,12 +1134,16 @@
           <div class="section-label">EVENT GALLERY</div>
           <h2 id="event-gallery-heading" class="display-headline">PHOTOS FROM THE FIELD</h2>
           <div class="event-gallery-grid">
-            ${event.gallery.map(img => `
-              <div class="event-gallery-item">
-                <img src="${typeof img === 'string' ? img : img.src}" alt="${typeof img === 'string' ? event.title : (img.caption || event.title)}" loading="lazy" />
-                ${typeof img === 'object' && img.caption ? `<span class="event-gallery-caption">${img.caption}</span>` : ''}
-              </div>
-            `).join('')}
+            ${event.gallery.map(img => {
+              const src = resolveAssetPath(typeof img === 'string' ? img : img.src);
+              const caption = typeof img === 'object' && img.caption ? img.caption : event.title;
+              return `
+                <div class="event-gallery-item" data-caption="${caption}" data-cat="${event.category || 'EVENT'}" data-date="${event.date}" tabindex="0" role="button" aria-label="View photo: ${caption}">
+                  <img src="${src}" alt="${caption}" loading="lazy" />
+                  <span class="event-gallery-caption">${caption}</span>
+                </div>
+              `;
+            }).join('')}
           </div>
         </section>
       `;
@@ -695,7 +1167,7 @@
       </div>
       <div class="event-detail-layout">
         <div class="event-main-image ${event.image ? '' : 'timeline-image-placeholder'}">
-          ${event.image ? `<img src="${event.image}" alt="${event.title}" loading="eager" />` : `<span>EVENT IMAGE<br/>TO BE PROVIDED</span>`}
+          ${event.image ? `<img src="${resolveAssetPath(event.image)}" alt="${event.title}" loading="eager" style="object-fit: cover; object-position: center 35%;" />` : `<span>EVENT IMAGE<br/>TO BE PROVIDED</span>`}
         </div>
         <div class="event-detail-copy">
           <h2 class="event-copy-heading">ABOUT THE EVENT</h2>
@@ -725,6 +1197,7 @@
   renderEventTimeline();
   renderTeamDirectory();
   renderEventDetail();
+  initCauseModal();
 
   /* ─── Smooth scroll (accounts for fixed nav height) ─── */
   function smoothScrollTo(el) {
@@ -822,9 +1295,9 @@
       if (isInnerPage) {
         siteHeader.classList.add('scrolled');
       } else {
-        siteHeader.classList.toggle('scrolled', window.scrollY > 60);
+        siteHeader.classList.toggle('scrolled', window.scrollY > 40);
       }
-    }, 80);
+    }, 16);
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
 
@@ -1031,7 +1504,7 @@
      GALLERY + LIGHTBOX
      ============================================================ */
   (function initGallery() {
-    const items     = $$('.gallery-item');
+    const items     = $$('.gallery-item, .event-gallery-item');
     const lightbox  = $('#lightbox');
     const lbOverlay = $('#lightbox-overlay');
     const lbImg     = $('#lightbox-img');
@@ -1165,7 +1638,6 @@
 
     const targets = [
       { sel: '.about-grid > *',          cls: 'reveal' },
-      { sel: '.wwd-card',                cls: 'reveal' },
       { sel: '.impact-stats-grid > *',   cls: 'reveal' },
       { sel: '.today-card',              cls: 'reveal' },
       { sel: '.story-card',              cls: 'reveal' },
