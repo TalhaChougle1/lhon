@@ -299,18 +299,12 @@
       </div>
     </section>
 
-    <!-- ===================== CAUSE DETAIL OVERLAY (FULL-SCREEN SPLIT) ===================== -->
-    <div id="cause-modal-backdrop" class="cause-modal-backdrop" aria-hidden="true" hidden></div>
+    <!-- ===================== CAUSE SUMMARY MODAL ===================== -->
     <div id="cause-modal-overlay" class="cause-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="cause-modal-title" hidden>
-      <div class="cause-modal-container" id="cause-modal-container">
-        <!-- LEFT COLUMN: Selected Card Stage Slot -->
-        <div class="cause-modal-left-stage" id="cause-modal-left-stage" aria-hidden="true"></div>
-
-        <!-- RIGHT COLUMN: Cause Detail Panel -->
-        <div class="cause-modal-dialog" id="cause-modal-dialog" tabindex="-1">
-          <button type="button" class="cause-modal-close" id="cause-modal-close" aria-label="Close cause details">✕</button>
-          <div class="cause-modal-body-container" id="cause-modal-body"></div>
-        </div>
+      <div class="cause-modal-backdrop" id="cause-modal-backdrop" aria-hidden="true"></div>
+      <div class="cause-modal-dialog" id="cause-modal-dialog" tabindex="-1">
+        <button type="button" class="cause-modal-close" id="cause-modal-close" aria-label="Close cause summary">✕</button>
+        <div class="cause-modal-body" id="cause-modal-body"></div>
       </div>
     </div>
 

@@ -352,7 +352,7 @@
 
   function resolveAssetPath(p) {
     if (!p) return p;
-    const isSubdir = window.location.pathname.includes('/events/');
+    const isSubdir = window.location.pathname.includes('/events/') || window.location.pathname.includes('/causes/');
     return (isSubdir && p.startsWith('assets/')) ? '../' + p : p;
   }
 
@@ -384,6 +384,17 @@
           <path d="M10 24 C10 32 16 38 24 38 C32 38 38 32 38 24 H10 Z" stroke-linejoin="round"/>
           <path d="M24 38 V42 M16 42 H32" stroke-linecap="round"/>
           <path d="M17 16 C17 16 20 18 20 21 M24 11 C24 11 27 14 27 21 M31 16 C31 16 34 18 34 21" stroke-linecap="round"/>
+        </svg>`;
+      case 'humanitarian':
+        return `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" class="cause-svg" aria-hidden="true">
+          <path d="M24 14 C21 9 14 9 11 13 C7 18 10 24 16 30 L24 38 L32 30 C38 24 41 18 37 13 C34 9 27 9 24 14 Z" stroke-linejoin="round"/>
+          <path d="M18 20 C18 20 20 23 24 23 C28 23 30 20 30 20" stroke-linecap="round"/>
+        </svg>`;
+      case 'vision':
+        return `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" class="cause-svg" aria-hidden="true">
+          <path d="M6 24 C11 14 20 9 24 9 C28 9 37 14 42 24 C37 34 28 39 24 39 C20 39 11 34 6 24 Z" stroke-linejoin="round"/>
+          <circle cx="24" cy="24" r="6" stroke-width="3"/>
+          <circle cx="24" cy="24" r="2.5" fill="currentColor"/>
         </svg>`;
       case 'youth':
         return `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" class="cause-svg" aria-hidden="true">
@@ -423,323 +434,128 @@
   }
 
   function initCauseModal() {
-    const section   = $('#what-we-do');
     const grid      = $('#pillar-grid');
     const overlay   = $('#cause-modal-overlay');
     const backdrop  = $('#cause-modal-backdrop');
     const dialog    = $('#cause-modal-dialog');
-    const leftStage = $('#cause-modal-left-stage');
     const modalBody = $('#cause-modal-body');
     const closeBtn  = $('#cause-modal-close');
-    if (!grid || !overlay || !backdrop || !dialog || !modalBody || !leftStage) return;
+    if (!grid || !overlay || !backdrop || !dialog || !modalBody) return;
 
     let lastFocusedElement = null;
-    let isTransitioning = false;
     let isOpen = false;
-    let currentSelectedCard = null;
-    let cleanupTimeout = null;
+    let savedScrollY = 0;
 
     function openCauseModal(pillarId) {
       if (isOpen) return;
       const pillar = siteData.pillars.find(p => p.id === pillarId);
-      const cards = $$('.wwd-card', grid);
-      const selectedIndex = cards.findIndex(c => c.dataset.pillarId === pillarId);
-      if (!pillar || selectedIndex === -1) return;
+      if (!pillar) return;
 
-      const selectedCard = cards[selectedIndex];
-      currentSelectedCard = selectedCard;
-      lastFocusedElement = (document.activeElement && document.activeElement !== document.body)
-        ? document.activeElement
-        : selectedCard;
-
+      lastFocusedElement = document.activeElement;
       if (lastFocusedElement && lastFocusedElement.setAttribute) {
         lastFocusedElement.setAttribute('aria-expanded', 'true');
       }
 
-      clearTimeout(cleanupTimeout);
-      isTransitioning = true;
-      isOpen = true;
+      savedScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
 
-      // 1. Capture original bounding rects of all 8 cards in viewport space
-      const originalRects = cards.map(c => c.getBoundingClientRect());
-      const selectedRect = originalRects[selectedIndex];
-      const isMobile = window.innerWidth <= 960;
+      const isSubdir = window.location.pathname.includes('/events/') || window.location.pathname.includes('/causes/');
+      const causeUrl = (isSubdir ? '../causes/' : 'causes/') + pillar.id + '.html';
 
-      // 2. Populate Cause Details on the Right
+      const mediaHtml = pillar.image
+        ? `<div class="cause-modal-media">
+            <div class="cause-modal-image-wrap">
+              <img src="${resolveAssetPath(pillar.image)}" alt="${pillar.alt || pillar.name}" loading="eager" style="${pillar.imagePosition ? `object-position: ${pillar.imagePosition};` : ''}" />
+            </div>
+          </div>`
+        : `<div class="cause-modal-media">
+            <div class="cause-modal-graphic-wrap cause-${pillar.id}" aria-hidden="true">
+              <div class="cause-modal-graphic">
+                ${getCauseIconSvg(pillar.id)}
+                <span class="wwd-cause-badge">${pillar.name}</span>
+              </div>
+            </div>
+          </div>`;
+
       modalBody.innerHTML = `
+        ${mediaHtml}
         <div class="cause-modal-body-container">
           <div class="cause-modal-meta">
             <span class="cause-modal-num-badge">CAUSE ${pillar.number}</span>
             <span class="cause-modal-tag">LIONS GLOBAL CAUSE</span>
           </div>
-          <h2 id="cause-modal-title" class="cause-modal-title display-headline">${pillar.name}</h2>
-          <div class="cause-modal-divider"></div>
+          <h3 class="cause-modal-title" id="cause-modal-title">${pillar.name}</h3>
           <p class="cause-modal-desc">${pillar.description}</p>
-          <div class="cause-modal-pillar-highlight">
-            <div class="cause-highlight-item">
-              <span class="cause-highlight-label">PILLAR NO.</span>
-              <span class="cause-highlight-val">${pillar.number} OF 08</span>
-            </div>
-            <div class="cause-highlight-item">
-              <span class="cause-highlight-label">SCOPE</span>
-              <span class="cause-highlight-val">GLOBAL &amp; LOCAL</span>
-            </div>
-            <div class="cause-highlight-item">
-              <span class="cause-highlight-label">ACTION</span>
-              <span class="cause-highlight-val">YOUTH-LED</span>
-            </div>
-          </div>
           <div class="cause-modal-actions">
-            <a href="#collaborate" class="cause-modal-cta-btn" id="cause-modal-support-btn">SUPPORT THIS CAUSE →</a>
-            <button type="button" class="cause-modal-close-btn" id="cause-modal-dismiss-btn" aria-label="Close cause details">CLOSE</button>
+            <a href="${causeUrl}" class="btn-primary cause-modal-explore-btn" id="cause-modal-explore-btn">EXPLORE THIS CAUSE →</a>
+            <button type="button" class="cause-modal-dismiss-btn" id="cause-modal-dismiss-btn" aria-label="Close cause summary">CLOSE</button>
           </div>
         </div>
       `;
 
-      const dismissBtn = $('#cause-modal-dismiss-btn', modalBody);
-      if (dismissBtn) dismissBtn.addEventListener('click', closeModal);
-
-      const supportBtn = $('#cause-modal-support-btn', modalBody);
-      if (supportBtn) {
-        supportBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          const target = document.querySelector('#collaborate');
-          closeModal({ restoreFocus: false });
-          if (target) {
-            requestAnimationFrame(() => {
-              smoothScrollTo(target);
-            });
-            setTimeout(() => {
-              const firstInput = target.querySelector('#field-name');
-              if (firstInput) {
-                firstInput.focus({ preventScroll: true });
-              } else {
-                target.setAttribute('tabindex', '-1');
-                target.focus({ preventScroll: true });
-              }
-            }, prefersReducedMotion ? 50 : 650);
-          }
-        });
-      }
-
-      // Unhide overlay & backdrop to measure stage layout
-      backdrop.removeAttribute('hidden');
-      overlay.removeAttribute('hidden');
-      if (section) section.classList.add('cause-detail-active');
-      document.documentElement.classList.add('cause-detail-active');
-      document.body.classList.add('cause-detail-active');
+      // Prevent background scrolling while modal is open
       document.body.style.overflow = 'hidden';
 
-      // 3. Compute target coordinates for the selected card and stacked cards on the LEFT
-      const stageRect = leftStage.getBoundingClientRect();
-      const cardW = selectedRect.width;
-      const cardH = selectedRect.height;
+      overlay.removeAttribute('hidden');
+      void overlay.offsetWidth; // Force reflow
+      overlay.classList.add('open');
+      isOpen = true;
 
-      let targetCenterX, targetCenterY, targetScale;
-
-      if (!isMobile) {
-        // Desktop: Left 48% column stage
-        targetCenterX = stageRect.left + stageRect.width / 2;
-        targetCenterY = stageRect.top + stageRect.height / 2;
-        const maxScaleW = (stageRect.width * 0.76) / cardW;
-        const maxScaleH = (stageRect.height * 0.88) / cardH;
-        targetScale = Math.min(maxScaleW, maxScaleH, 1.85);
-      } else {
-        // Mobile: Stacked layout above details
-        targetCenterX = stageRect.left + stageRect.width / 2;
-        targetCenterY = stageRect.top + stageRect.height * 0.48;
-        targetScale = Math.min((stageRect.width * 0.88) / cardW, (stageRect.height * 0.82) / cardH, 1.05);
+      // Focus management: focus Explore button for immediate keyboard accessibility
+      const exploreBtn = $('#cause-modal-explore-btn', modalBody);
+      if (exploreBtn) {
+        exploreBtn.focus();
+      } else if (closeBtn) {
+        closeBtn.focus();
       }
 
-      if (prefersReducedMotion) {
-        backdrop.classList.add('open');
-        overlay.classList.add('open');
-        cards.forEach((c, i) => {
-          if (i === selectedIndex) {
-            c.classList.add('is-selected');
-          } else {
-            c.classList.add('is-stacked');
-          }
-        });
-        isTransitioning = false;
-        if (closeBtn) closeBtn.focus();
-        return;
+      const dismissBtn = $('#cause-modal-dismiss-btn', modalBody);
+      if (dismissBtn) {
+        dismissBtn.addEventListener('click', closeModal);
       }
-
-      const selInitCenterX = selectedRect.left + cardW / 2;
-      const selInitCenterY = selectedRect.top + cardH / 2;
-      const selDx = targetCenterX - selInitCenterX;
-      const selDy = targetCenterY - selInitCenterY;
-
-      // Sort surrounding cards by distance from selected card for natural staggered motion
-      const surrounding = cards
-        .map((c, i) => {
-          if (i === selectedIndex) return null;
-          const rect = originalRects[i];
-          const cx = rect.left + rect.width / 2;
-          const cy = rect.top + rect.height / 2;
-          const dist = Math.hypot(cx - selInitCenterX, cy - selInitCenterY);
-          return { card: c, index: i, rect, cx, cy, dist };
-        })
-        .filter(Boolean)
-        .sort((a, b) => a.dist - b.dist);
-
-      // 4. Animate Selected Card to the LEFT column with prominent elevation
-      selectedCard.classList.add('is-animating', 'is-selected');
-      selectedCard.style.zIndex = '2200';
-      selectedCard.style.transition = 'transform 750ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 750ms cubic-bezier(0.22, 1, 0.36, 1), border-color 750ms ease';
-      selectedCard.style.transform = `translate3d(${selDx}px, ${selDy}px, 0) scale(${targetScale})`;
-      selectedCard.style.boxShadow = '0 32px 70px -10px rgba(13, 27, 62, 0.28), 0 16px 32px -6px rgba(13, 27, 62, 0.16)';
-      selectedCard.style.borderColor = 'var(--campaign-blue)';
-
-      // 5. Animate surrounding 7 cards inward behind selected card on the LEFT with staggered delays
-      surrounding.forEach((item, rank) => {
-        const { card, cx, cy } = item;
-        card.classList.add('is-animating', 'is-stacked');
-        card.style.zIndex = `${2150 - rank}`;
-        card.style.pointerEvents = 'none';
-
-        const offsetIndex = rank - 3;
-        const stackOffsetX = !isMobile ? offsetIndex * 12 : offsetIndex * 4;
-        const stackOffsetY = !isMobile ? Math.abs(offsetIndex) * 6 - 8 : (rank + 1) * 3;
-        const depthScale = targetScale * (0.94 - rank * 0.012);
-
-        const cardDx = (targetCenterX + stackOffsetX) - cx;
-        const cardDy = (targetCenterY + stackOffsetY) - cy;
-
-        const delay = Math.round(25 + rank * 30);
-
-        card.style.transition = `transform 750ms cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms, opacity 750ms ease ${delay}ms, box-shadow 750ms ease ${delay}ms`;
-        card.style.transform = `translate3d(${cardDx}px, ${cardDy}px, 0) scale(${depthScale})`;
-        card.style.opacity = `${Math.max(0.65, 0.88 - rank * 0.04)}`;
-        card.style.boxShadow = '0 12px 28px rgba(13, 27, 62, 0.10)';
-      });
-
-      // 6. Reveal backdrop and slide details dialog in from the RIGHT
-      requestAnimationFrame(() => {
-        backdrop.classList.add('open');
-        overlay.classList.add('open');
-      });
-
-      // 7. Transition completion
-      cleanupTimeout = setTimeout(() => {
-        isTransitioning = false;
-        if (closeBtn) closeBtn.focus();
-      }, 820);
     }
 
-    function closeModal(options) {
+    function closeModal() {
       if (!isOpen) return;
-      const restoreFocus = options && typeof options.restoreFocus === 'boolean' ? options.restoreFocus : true;
-      clearTimeout(cleanupTimeout);
-      isTransitioning = true;
       isOpen = false;
 
-      const cards = $$('.wwd-card', grid);
-
-      // Release body & html scroll locks immediately so page can scroll smoothly
-      document.body.style.overflow = '';
-      document.documentElement.classList.remove('cause-detail-active');
-      document.body.classList.remove('cause-detail-active');
-      backdrop.style.pointerEvents = 'none';
-      overlay.style.pointerEvents = 'none';
-
-      if (prefersReducedMotion) {
-        backdrop.classList.remove('open');
-        overlay.classList.remove('open');
-        backdrop.setAttribute('hidden', '');
-        overlay.setAttribute('hidden', '');
-        backdrop.style.pointerEvents = '';
-        overlay.style.pointerEvents = '';
-        if (section) section.classList.remove('cause-detail-active');
-        cards.forEach(c => {
-          c.classList.remove('is-selected', 'is-stacked', 'is-animating');
-          c.removeAttribute('style');
-        });
-        if (lastFocusedElement) {
-          if (lastFocusedElement.setAttribute) lastFocusedElement.setAttribute('aria-expanded', 'false');
-          if (restoreFocus) lastFocusedElement.focus();
-        }
-        isTransitioning = false;
-        currentSelectedCard = null;
-        return;
-      }
-
-      // 1. Details panel animates out to the RIGHT, backdrop fades out
-      backdrop.classList.remove('open');
       overlay.classList.remove('open');
-      if (section) section.classList.remove('cause-detail-active');
+      document.body.style.overflow = '';
+      window.scrollTo({ top: savedScrollY, behavior: 'instant' });
 
-      // 2. Coordinated reverse animation:
-      // Selected card moves back to exact original grid location
-      // Surrounding cards animate outward from behind selected card
       setTimeout(() => {
-        if (currentSelectedCard) {
-          currentSelectedCard.style.transition = 'transform 680ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 680ms cubic-bezier(0.22, 1, 0.36, 1), border-color 680ms ease';
-          currentSelectedCard.style.transform = 'translate3d(0, 0, 0) scale(1)';
-          currentSelectedCard.style.boxShadow = '';
-          currentSelectedCard.style.borderColor = '';
+        if (!isOpen) {
+          overlay.setAttribute('hidden', '');
+          modalBody.innerHTML = '';
         }
+      }, 250);
 
-        const otherCards = cards.filter(c => c !== currentSelectedCard);
-        otherCards.forEach((card, rank) => {
-          const reverseDelay = Math.round(rank * 25);
-          card.style.transition = `transform 650ms cubic-bezier(0.22, 1, 0.36, 1) ${reverseDelay}ms, opacity 650ms ease ${reverseDelay}ms, box-shadow 650ms ease ${reverseDelay}ms`;
-          card.style.transform = 'translate3d(0, 0, 0) scale(1)';
-          card.style.opacity = '1';
-          card.style.boxShadow = '';
-        });
-      }, 60);
-
-      // 3. Complete cleanup when transition finishes
-      cleanupTimeout = setTimeout(() => {
-        backdrop.setAttribute('hidden', '');
-        overlay.setAttribute('hidden', '');
-        backdrop.style.pointerEvents = '';
-        overlay.style.pointerEvents = '';
-        document.body.style.overflow = '';
-        document.documentElement.classList.remove('cause-detail-active');
-        document.body.classList.remove('cause-detail-active');
-
-        cards.forEach(card => {
-          card.classList.remove('is-selected', 'is-stacked', 'is-animating');
-          card.removeAttribute('style');
-        });
-
-        if (lastFocusedElement) {
-          if (lastFocusedElement.setAttribute) {
-            lastFocusedElement.setAttribute('aria-expanded', 'false');
-          }
-          if (restoreFocus) {
-            lastFocusedElement.focus();
-          }
+      if (lastFocusedElement) {
+        if (lastFocusedElement.setAttribute) {
+          lastFocusedElement.setAttribute('aria-expanded', 'false');
         }
-
-        isTransitioning = false;
-        currentSelectedCard = null;
-      }, 780);
+        if (typeof lastFocusedElement.focus === 'function') {
+          lastFocusedElement.focus();
+        }
+      }
     }
 
-    // Grid Click & Keyboard Handlers
-    if (grid) {
-      grid.addEventListener('click', e => {
+    // Event delegation on pillar cards
+    grid.addEventListener('click', e => {
+      const card = e.target.closest('.wwd-card');
+      if (!card) return;
+      const pillarId = card.dataset.pillarId;
+      if (pillarId) openCauseModal(pillarId);
+    });
+
+    grid.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
         const card = e.target.closest('.wwd-card');
         if (!card) return;
+        e.preventDefault();
         const pillarId = card.dataset.pillarId;
         if (pillarId) openCauseModal(pillarId);
-      });
-
-      grid.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          const card = e.target.closest('.wwd-card');
-          if (!card) return;
-          e.preventDefault();
-          const pillarId = card.dataset.pillarId;
-          if (pillarId) openCauseModal(pillarId);
-        }
-      });
-    }
+      }
+    });
 
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
     if (backdrop) backdrop.addEventListener('click', closeModal);
@@ -750,6 +566,7 @@
       }
     });
 
+    // Focus trap inside dialog
     dialog.addEventListener('keydown', e => {
       if (e.key !== 'Tab') return;
       const focusable = dialog.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
@@ -765,13 +582,6 @@
         first.focus();
       }
     });
-
-    // Handle viewport resize safely
-    window.addEventListener('resize', debounce(() => {
-      if (isOpen && !isTransitioning) {
-        closeModal();
-      }
-    }, 200));
   }
 
   function renderEventTimeline() {
